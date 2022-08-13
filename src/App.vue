@@ -8,11 +8,13 @@
   </router-view>
   <app-player />
   <auth />
+  <short />
 </template>
 
 <script>
 import Header from "@/components/Header.vue";
 import Auth from "@/components/Auth.vue";
+import Short from "@/components/Short.vue";
 import { mapWritableState } from "pinia";
 import useUserStore from "@/stores/user";
 import { auth } from "./includes/firebase";
@@ -23,6 +25,7 @@ export default {
   components: {
     Header,
     Auth,
+    Short,
     AppPlayer,
   },
   computed: {

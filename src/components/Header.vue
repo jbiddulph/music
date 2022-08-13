@@ -31,6 +31,14 @@
               >
             </li>
             <li>
+              <a
+                class="px-2 text-white"
+                href="#"
+                @click.prevent="toggleShortModal"
+                >10 second speech</a
+              >
+            </li>
+            <li>
               <a class="px-2 text-white" href="#" @click.prevent="signOut"
                 >Logout</a
               >
@@ -45,16 +53,21 @@
 <script>
 import { mapStores } from "pinia";
 import useModalStore from "@/stores/modal";
+import useShortStore from "@/stores/short";
 import useUserStore from "@/stores/user";
 export default {
   name: "Header",
   computed: {
-    ...mapStores(useModalStore, useUserStore),
+    ...mapStores(useModalStore, useShortStore, useUserStore),
   },
   methods: {
     toggleAuthModal() {
       this.modalStore.isOpen = !this.modalStore.isOpen;
       console.log(this.modalStore.isOpen);
+    },
+    toggleShortModal() {
+      this.shortStore.isOpen2 = !this.shortStore.isOpen2;
+      console.log(this.shortStore.isOpen2);
     },
     signOut() {
       this.userStore.signOut();
