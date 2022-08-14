@@ -6,7 +6,7 @@
         class="absolute inset-0 w-full h-full box-border bg-contain music-bg"
         style="background-image: url(/assets/img/song-header.png)"
       ></div>
-      <div class="container mx-auto flex items-center">
+      <div class="container mx-auto flex items-center z-10">
         <!-- Play/Pause Button -->
         <button
           type="button"

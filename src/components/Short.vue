@@ -42,7 +42,7 @@
         "
       >
         <!-- Add margin if you want to see some of the overlay behind the modal-->
-        <div class="py-4 text-left px-6">
+        <div class="py-4 text-left px-6 z-20">
           <!--Title-->
           <div class="flex justify-between items-center pb-4">
             <p class="text-2xl font-bold">Your Account</p>
@@ -55,7 +55,7 @@
             </div>
           </div>
 
-          <h2>Here we go</h2>
+          <app-countdown />
         </div>
       </div>
     </div>
@@ -65,10 +65,13 @@
 <script>
 import { mapState, mapWritableState } from "pinia";
 import useShortStore from "@/stores/short";
+import AppCountdown from "@/components/Countdown.vue";
 
 export default {
   name: "Short",
-  components: {},
+  components: {
+    AppCountdown,
+  },
   data() {
     return {
       tab: "login",
