@@ -18,6 +18,7 @@
     >
       start countdown
     </button>
+    <section id="recordings"></section>
   </div>
 </template>
 
@@ -28,6 +29,9 @@ export default {
     return {
       timerEnabled: false,
       timerCount: 10,
+      chunks: [],
+      audioChunks: {},
+      mediaRecorder: {},
     };
   },
   watch: {
@@ -48,15 +52,43 @@ export default {
         }
         if (value == 0) {
           console.log("stopped");
+          this.mediaRecorder.stop();
+          this.mediaRecorder.addEventListener("stop", () => {
+            const audioBlob = new Blob(self.audioChunks);
+            self.recordedVoice = URL.createObjectURL(audioBlob);
+          });
         }
       },
       immediate: true, // This ensures the watcher is triggered upon creation
     },
-    if() {},
   },
   methods: {
     play() {
       this.timerEnabled = true;
+      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder.start(1000);
+        var recordingsElement = document.getElementById("recordings");
+        // Build the player
+        var clipContainerElement = document.createElement("article");
+        var clipLabelElement = document.createElement("p");
+        var audioElement = document.createElement("audio");
+        audioElement.setAttribute("controls", "");
+        clipContainerElement.appendChild(audioElement);
+        clipContainerElement.appendChild(clipLabelElement);
+        recordingsElement.appendChild(clipContainerElement);
+        audioElement.controls = true;
+
+        this.mediaRecorder.ondataavailable = function (event) {
+          console.log("Event: ", event.data);
+          var blob = new Blob(this.chunks, { type: "audio/ogg; codecs=opus" });
+          this.chunks = [];
+
+          audioElement.src = window.URL.createObjectURL(blob);
+
+          this.chunks.push(event.data);
+        };
+      });
     },
   },
 };

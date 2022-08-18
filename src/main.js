@@ -20,7 +20,7 @@ auth.onAuthStateChanged(() => {
     app.use(createPinia());
     app.use(router);
     app.use(VeeValidatePlugin);
-    app.use("i18n");
+    app.use(i18n);
     app.directive("icon", Icon);
 
     app.mount("#app");
