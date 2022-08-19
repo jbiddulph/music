@@ -14,6 +14,40 @@
         transition
         hover:bg-purple-700
       "
+      id="record"
+      @click.prevent="startRecording"
+    >
+      Record
+    </button>
+    <button
+      class="
+        block
+        w-full
+        bg-purple-600
+        text-white
+        py-1.5
+        px-3
+        rounded
+        transition
+        hover:bg-purple-700
+      "
+      id="stop"
+      @click.prevent="stopRecording"
+    >
+      Stop
+    </button>
+    <button
+      class="
+        block
+        w-full
+        bg-purple-600
+        text-white
+        py-1.5
+        px-3
+        rounded
+        transition
+        hover:bg-purple-700
+      "
       @click.prevent="play"
     >
       start countdown
@@ -63,6 +97,34 @@ export default {
     },
   },
   methods: {
+    stopRecording() {
+      this.mediaRecorder.stop();
+      var clipContainerElement = document.createElement("article");
+      var clipLabelElement = document.createElement("p");
+      var audioElement = document.createElement("audio");
+      audioElement.setAttribute("controls", "");
+      clipContainerElement.appendChild(audioElement);
+      clipContainerElement.appendChild(clipLabelElement);
+      var recordingsElement = document.getElementById("recordings");
+      recordingsElement.appendChild(clipContainerElement);
+      audioElement.controls = true;
+
+      this.mediaRecorder.ondataavailable = function (event) {
+        console.log("Event: ", event.data);
+        var blob = new Blob(this.chunks, { type: "audio/ogg; codecs=opus" });
+        this.chunks = [];
+
+        audioElement.src = window.URL.createObjectURL(blob);
+
+        this.chunks.push(event.data);
+      };
+    },
+    startRecording() {
+      navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
+        this.mediaRecorder = new MediaRecorder(stream);
+        this.mediaRecorder.start(1000);
+      });
+    },
     play() {
       this.timerEnabled = true;
       navigator.mediaDevices.getUserMedia({ audio: true }).then((stream) => {
